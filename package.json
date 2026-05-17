@@ -22,7 +22,8 @@
     "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
     "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
-    "test:ember": "ember test"
+    "test:ember": "ember test",
+    "test:e2e": "node tests/e2e/spriteforge-test.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
@@ -63,6 +64,7 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-qunit": "^8.1.1",
     "loader.js": "^4.7.0",
+    "playwright": "^1.60.0",
     "prettier": "^3.2.5",
     "qunit": "^2.20.1",
     "qunit-dom": "^2.0.0",

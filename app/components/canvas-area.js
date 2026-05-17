@@ -14,16 +14,25 @@ export default class CanvasAreaComponent extends Component {
   }
 
   @action
-  onMouseDown(e) { this.forge.handleMouseDown(e); }
+  onMouseDown(e) {
+    this.forge.handleMouseDown(e);
+  }
 
   @action
-  onWheel(e) { this.forge.handleWheel(e); }
+  onWheel(e) {
+    this.forge.handleWheel(e);
+  }
 
   @action
-  onDragOver(e) { e.preventDefault(); document.getElementById('dropCard')?.classList.add('hov'); }
+  onDragOver(e) {
+    e.preventDefault();
+    document.getElementById('dropCard')?.classList.add('hov');
+  }
 
   @action
-  onDragLeave() { document.getElementById('dropCard')?.classList.remove('hov'); }
+  onDragLeave() {
+    document.getElementById('dropCard')?.classList.remove('hov');
+  }
 
   @action
   onDrop(e) {

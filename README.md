@@ -1,56 +1,34 @@
-# spriteforge
+# SpriteForge
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Herramienta para crear sprite sheets / atlases para videojuegos. Carga una imagen, detecta sprites automáticamente, escálalos a tamaño uniforme y exporta PNG + JSON en múltiples formatos.
 
-## Prerequisites
+## Requisitos
 
-You will need the following things properly installed on your computer.
+- [Node.js](https://nodejs.org/) >= 18
+- [npm](https://www.npmjs.com/)
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://cli.emberjs.com/release/)
-* [Google Chrome](https://google.com/chrome/)
+## Instalación
 
-## Installation
+```bash
+npm install
+```
 
-* `git clone <repository-url>` this repository
-* `cd spriteforge`
-* `npm install`
+## Desarrollo
 
-## Running / Development
+```bash
+npm start
+```
 
-* `npm run start`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+Visita [http://localhost:4200](http://localhost:4200).
 
-### Code Generators
+## Funcionalidades
 
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `npm run test`
-* `npm run test:ember -- --server`
-
-### Linting
-
-* `npm run lint`
-* `npm run lint:fix`
-
-### Building
-
-* `npm exec ember build` (development)
-* `npm run build` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://cli.emberjs.com/release/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+- **Carga de imagen** por filepicker o drag & drop
+- **4 modos de edición**: Seleccionar, Dibujar, Mover, Pan
+- **Grid uniforme**: divide la imagen en filas/columnas
+- **Auto-detección**: detecta sprites por color de fondo con tolerancia ajustable
+- **Auto Escalado**: normaliza todos los sprites al tamaño máximo y los ordena en cuadrícula
+- **Auto Scaling**: re-escala sprites con modos Fit/Stretch/Crop/1:1
+- **Exportación**: PNG + JSON (Phaser, PixiJS v8, Array, CSS)
+- **Fondo transparente** en exportación
+- **Atajos de teclado**: S/D/M/P para modos, flechas para mover/redimensionar, +/- zoom
