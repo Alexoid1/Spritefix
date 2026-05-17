@@ -1,0 +1,24 @@
+<div class="ov" id="expModal">
+  <div class="modal exp-modal">
+    <div class="mh">// EXPORTAR ATLAS</div>
+    <div class="fmts">
+      <div class="fc on" id="fmt-phaser" role="button" {{on "click" (fn this.forge.pickFmt "phaser")}}>
+        <div class="ftag">JSON Phaser</div><h3>Phaser 3 / PixiJS</h3><p>Hash format — estándar para atlas loaders</p>
+      </div>
+      <div class="fc" id="fmt-array" role="button" {{on "click" (fn this.forge.pickFmt "array")}}>
+        <div class="ftag">JSON Array</div><h3>Array genérico</h3><p>Lista plana, máxima compatibilidad</p>
+      </div>
+      <div class="fc" id="fmt-pixi" role="button" {{on "click" (fn this.forge.pickFmt "pixi")}}>
+        <div class="ftag">JSON PixiJS v8</div><h3>PixiJS v8 Atlas</h3><p>Formato nativo con spriteSourceSize</p>
+      </div>
+      <div class="fc" id="fmt-css" role="button" {{on "click" (fn this.forge.pickFmt "css")}}>
+        <div class="ftag">CSS</div><h3>CSS Sprites</h3><p>Clases con background-position</p>
+      </div>
+    </div>
+    <pre class="code" id="expCode"></pre>
+    <div class="mfoot">
+      <button class="btn" type="button" {{on "click" this.forge.closeExport}}>Cancelar</button>
+      <button class="btn g" type="button" {{on "click" this.forge.doExport}}>⬇ Descargar</button>
+    </div>
+  </div>
+</div>

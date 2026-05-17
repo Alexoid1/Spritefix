@@ -1,0 +1,20 @@
+<div class="topbar">
+  <div class="logo">SPRITE<span>FORGE</span></div>
+  <div class="sep"></div>
+  <button class="btn" type="button" onclick="document.getElementById('imgIn').click()">📂 Imagen</button>
+  <button class="btn" type="button" onclick="document.getElementById('jsonIn').click()">📋 JSON</button>
+  <div class="sep"></div>
+  <div class="modes">
+    <button class="mbn on" id="m-sel" type="button" {{on "click" (fn this.forge.setMode "sel")}}>✦ Sel</button>
+    <button class="mbn"    id="m-drw" type="button" {{on "click" (fn this.forge.setMode "drw")}}>✏ Dibujar</button>
+    <button class="mbn"    id="m-mov" type="button" {{on "click" (fn this.forge.setMode "mov")}}>⊹ Mover</button>
+    <button class="mbn"    id="m-pan" type="button" {{on "click" (fn this.forge.setMode "pan")}}>✥ Pan</button>
+  </div>
+  <div class="sep"></div>
+  <button class="btn a" type="button" {{on "click" this.forge.runAutoDetect}}>⚡ Auto-detectar</button>
+  <button class="btn v" id="btnScale" type="button" {{on "click" this.forge.openScale}} disabled={{not this.forge.frames.length}}>◈ Auto Scaling</button>
+  <div class="tr">
+    <button class="btn b" id="btnExp" type="button" {{on "click" this.forge.openExport}} disabled={{not this.forge.frames.length}}>⬇ JSON</button>
+    <button class="btn g" id="btnSave" type="button" {{on "click" this.forge.exportSheet}} disabled={{not this.forge.frames.length}}>💾 Sheet</button>
+  </div>
+</div>

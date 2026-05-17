@@ -1,0 +1,16 @@
+<TopBar />
+
+<div class="ws">
+  <LeftSidebar />
+  <CanvasArea />
+  <RightSidebar />
+</div>
+
+<StatusBar />
+<ExportModal />
+<ScaleModal />
+
+<input type="file" id="imgIn" accept="image/*" {{on "change" this.forge.loadImg}}>
+<input type="file" id="jsonIn" accept=".json" {{on "change" this.forge.loadJSON}}>
+
+{{outlet}}

@@ -1,0 +1,25 @@
+<div class="carea" id="carea">
+  {{#unless this.forge.img}}
+  <div class="drop-ov">
+    <div class="drop-card" id="dropCard">
+      <div class="drop-icon">🎮</div>
+      <div class="drop-t">Arrastra tu sprite sheet aquí</div>
+      <div class="drop-s">PNG · JPG · GIF · WEBP</div>
+      <button class="btn g" type="button" onclick="document.getElementById('imgIn').click()" style="margin-top:8px">Seleccionar archivo</button>
+    </div>
+  </div>
+  {{/unless}}
+  {{#if this.forge.img}}
+  <div class="cpad">
+    <canvas
+      id="mc"
+      {{did-insert this.setupCanvas}}
+      {{on "mousedown" this.onMouseDown}}
+      {{on "wheel" this.onWheel}}
+      {{on "dragover" this.onDragOver}}
+      {{on "dragleave" this.onDragLeave}}
+      {{on "drop" this.onDrop}}
+    ></canvas>
+  </div>
+  {{/if}}
+</div>

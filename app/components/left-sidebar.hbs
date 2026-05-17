@@ -1,0 +1,94 @@
+<div class="sb">
+  <div class="panel">
+    <div class="pt">Imagen</div>
+    <div class="f"><label>Nombre</label><Input @type="text" @value={{this.forge.imgName}} id="iName" /></div>
+    <div class="r2">
+      <div class="f"><label>W px</label><input type="text" id="iW" value={{this.forge.imgW}} readonly style="color:var(--txt3)"/></div>
+      <div class="f"><label>H px</label><input type="text" id="iH" value={{this.forge.imgH}} readonly style="color:var(--txt3)"/></div>
+    </div>
+    <div class="f"><label>Zoom</label>
+      <div class="zrow">
+        <input type="range" id="zSlider" min="10" max="800" value={{mult this.forge.zoom 100}} step="10" {{on "input" this.onZoom}}>
+        <span class="zlbl" id="zLbl">{{mult this.forge.zoom 100}}%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="pt">Frame seleccionado</div>
+    <div id="fed">{{#if (gte this.forge.sel 0)}}<FrameEditor @forge={{this.forge}} />{{else}}<div style="font-size:10px;color:var(--txt3);text-align:center;padding:10px 0;font-style:italic">Clic en un frame</div>{{/if}}</div>
+  </div>
+
+  <div class="panel">
+    <div class="pt">Agregar frame</div>
+    <div class="r2">
+      <div class="f"><label>X</label><input type="number" id="nfx" value="0" min="0"/></div>
+      <div class="f"><label>Y</label><input type="number" id="nfy" value="0" min="0"/></div>
+    </div>
+    <div class="r2">
+      <div class="f"><label>W</label><input type="number" id="nfw" value="64" min="1"/></div>
+      <div class="f"><label>H</label><input type="number" id="nfh" value="64" min="1"/></div>
+    </div>
+    <div class="f"><label>Nombre</label><Input @type="text" @value="frame_0" id="nfname" /></div>
+    <button class="btn" type="button" {{on "click" this.forge.addManual}} style="width:100%;justify-content:center;margin-top:2px">+ Agregar</button>
+  </div>
+
+  <div class="panel">
+    <div class="pt">Grid uniforme</div>
+    <div class="r2">
+      <div class="f"><label>Cols</label><input type="number" id="gCols" value="4" min="1"/></div>
+      <div class="f"><label>Rows</label><input type="number" id="gRows" value="4" min="1"/></div>
+    </div>
+    <div class="r2">
+      <div class="f"><label>W frame</label><input type="number" id="gW" value="64" min="1"/></div>
+      <div class="f"><label>H frame</label><input type="number" id="gH" value="64" min="1"/></div>
+    </div>
+    <div class="r2">
+      <div class="f"><label>Offset X</label><input type="number" id="gOX" value="0" min="0"/></div>
+      <div class="f"><label>Offset Y</label><input type="number" id="gOY" value="0" min="0"/></div>
+    </div>
+    <div class="f"><label>Prefijo</label><Input @type="text" @value="frame_" id="gPfx" /></div>
+    <button class="btn" type="button" {{on "click" this.forge.applyGrid}} style="width:100%;justify-content:center;margin-top:2px">⊞ Grid</button>
+  </div>
+
+  <div class="panel">
+    <div class="pt a2">Auto-detección</div>
+    <div class="f"><label>Fondo</label><input type="color" id="bgCol" value="#000000"/></div>
+    <div class="r2">
+      <div class="f"><label>Tolerancia</label><input type="number" id="bgTol" value="30" min="0" max="255"/></div>
+      <div class="f"><label>Padding px</label><input type="number" id="autoPad" value="1" min="0" max="20"/></div>
+    </div>
+    <button class="btn a" type="button" {{on "click" this.forge.runAutoDetect}} style="width:100%;justify-content:center;margin-top:2px">⚡ Detectar</button>
+  </div>
+
+  <div class="panel">
+    <div class="pt v2">Auto Scaling</div>
+    <div class="scale-box">
+      <div class="r2">
+        <div class="f"><label>Cell W</label><input type="number" id="sCW" value="64" min="4" {{on "input" this.forge.syncSb2M}}/></div>
+        <div class="f"><label>Cell H</label><input type="number" id="sCH" value="64" min="4" {{on "input" this.forge.syncSb2M}}/></div>
+      </div>
+      <div class="r2">
+        <div class="f"><label>Cols</label><input type="number" id="sCols" value="8" min="1" {{on "input" this.forge.syncSb2M}}/></div>
+        <div class="f"><label>Gap</label>  <input type="number" id="sGap" value="0" min="0" {{on "input" this.forge.syncSb2M}}/></div>
+      </div>
+      <div class="f"><label>Fondo</label><input type="color" id="sBg" value="#000000" {{on "input" this.forge.syncSb2M}}/></div>
+      <div class="f"><label>Modo escala</label>
+        <div class="rrow">
+          <div class="ro on" id="sb-fit"     {{on "click" (fn this.forge.setSM "fit")}}>Fit</div>
+          <div class="ro"    id="sb-stretch" {{on "click" (fn this.forge.setSM "stretch")}}>Stretch</div>
+          <div class="ro"    id="sb-crop"    {{on "click" (fn this.forge.setSM "crop")}}>Crop</div>
+          <div class="ro"    id="sb-none"    {{on "click" (fn this.forge.setSM "none")}}>1:1</div>
+        </div>
+      </div>
+      <div class="f"><label>Alineación</label>
+        <div class="ag" id="sbAG">
+          <div class="ab" {{on "click" (fn this.forge.setAlign "tl")}}>↖</div><div class="ab" {{on "click" (fn this.forge.setAlign "tc")}}>↑</div><div class="ab" {{on "click" (fn this.forge.setAlign "tr")}}>↗</div>
+          <div class="ab" {{on "click" (fn this.forge.setAlign "ml")}}>←</div><div class="ab on" {{on "click" (fn this.forge.setAlign "mc")}}>·</div><div class="ab" {{on "click" (fn this.forge.setAlign "mr")}}>→</div>
+          <div class="ab" {{on "click" (fn this.forge.setAlign "bl")}}>↙</div><div class="ab" {{on "click" (fn this.forge.setAlign "bc")}}>↓</div><div class="ab" {{on "click" (fn this.forge.setAlign "br")}}>↘</div>
+        </div>
+      </div>
+      <button class="btn v" id="btnSbScale" type="button" {{on "click" this.forge.openScale}} disabled={{not this.forge.frames.length}} style="width:100%;justify-content:center;font-size:10px">◈ Previsualizar y generar</button>
+    </div>
+  </div>
+</div>

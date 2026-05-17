@@ -1,0 +1,80 @@
+<div class="ov" id="scModal">
+  <div class="modal sc-modal">
+    <div class="mh" style="color:var(--acc5)">◈ AUTO SCALING — Uniform Sheet Generator</div>
+    <div class="sc-body">
+      <div class="sc-ctrl">
+        <div class="csec">
+          <div class="csec-t">Tamaño de celda</div>
+          <div class="r2">
+            <div class="f"><label>W px</label><input type="number" id="mCW" value="64" min="4" {{on "input" this.forge.syncM2Sb}}/></div>
+            <div class="f"><label>H px</label><input type="number" id="mCH" value="64" min="4" {{on "input" this.forge.syncM2Sb}}/></div>
+          </div>
+          <button class="btn" type="button" {{on "click" this.forge.autoSuggest}} style="width:100%;justify-content:center;font-size:10px;padding:4px">⟳ Sugerir tamaño</button>
+        </div>
+        <div class="csec">
+          <div class="csec-t">Layout</div>
+          <div class="r2">
+            <div class="f"><label>Cols</label><input type="number" id="mCols" value="8" min="1" {{on "input" this.forge.syncM2Sb}}/></div>
+            <div class="f"><label>Gap px</label><input type="number" id="mGap" value="0" min="0" {{on "input" this.forge.syncM2Sb}}/></div>
+          </div>
+          <div class="f"><label>Fondo</label><input type="color" id="mBg" value="#000000" {{on "input" this.forge.syncM2Sb}}/></div>
+        </div>
+        <div class="csec">
+          <div class="csec-t">Modo escala</div>
+          <div class="rrow">
+            <div class="ro on" id="m-fit"     {{on "click" (fn this.forge.setSM "fit")}}>Fit</div>
+            <div class="ro"    id="m-stretch" {{on "click" (fn this.forge.setSM "stretch")}}>Stretch</div>
+            <div class="ro"    id="m-crop"    {{on "click" (fn this.forge.setSM "crop")}}>Crop</div>
+            <div class="ro"    id="m-none"    {{on "click" (fn this.forge.setSM "none")}}>1:1</div>
+          </div>
+          <p class="modeDesc" id="mDesc">Fit: escala manteniendo proporción, espacio sobrante relleno con fondo.</p>
+        </div>
+        <div class="csec">
+          <div class="csec-t">Alineación</div>
+          <div class="ag" id="mAG">
+            <div class="ab" {{on "click" (fn this.forge.setAlign "tl")}}>↖</div><div class="ab" {{on "click" (fn this.forge.setAlign "tc")}}>↑</div><div class="ab" {{on "click" (fn this.forge.setAlign "tr")}}>↗</div>
+            <div class="ab" {{on "click" (fn this.forge.setAlign "ml")}}>←</div><div class="ab on" {{on "click" (fn this.forge.setAlign "mc")}}>·</div><div class="ab" {{on "click" (fn this.forge.setAlign "mr")}}>→</div>
+            <div class="ab" {{on "click" (fn this.forge.setAlign "bl")}}>↙</div><div class="ab" {{on "click" (fn this.forge.setAlign "bc")}}>↓</div><div class="ab" {{on "click" (fn this.forge.setAlign "br")}}>↘</div>
+          </div>
+        </div>
+        <div class="csec">
+          <div class="csec-t">Estadísticas</div>
+          <div class="stats">
+            <div class="sbox"><div class="sk">Frames</div><div class="sv" id="st-n">0</div></div>
+            <div class="sbox"><div class="sk">Max</div>   <div class="sv" id="st-mx">—</div></div>
+            <div class="sbox"><div class="sk">Min</div>   <div class="sv" id="st-mn">—</div></div>
+            <div class="sbox"><div class="sk">Celda</div> <div class="sv" id="st-c">—</div></div>
+            <div class="sbox"><div class="sk">Sheet</div> <div class="sv" id="st-s">—</div></div>
+            <div class="sbox"><div class="sk">Grid</div>  <div class="sv" id="st-g">—</div></div>
+          </div>
+          <div class="progbar"><div class="progfill" id="pfill" style="width:0%"></div></div>
+          <div class="proglbl" id="plbl"></div>
+        </div>
+      </div>
+
+      <div class="sc-right">
+        <div class="pv-hdr">
+          <span id="pvZLbl">zoom: —</span>
+          <div style="display:flex;gap:4px">
+            <button class="btn" type="button" style="padding:3px 7px" {{on "click" (fn this.forge.changePvZ -1)}}>−</button>
+            <button class="btn" type="button" style="padding:3px 7px" {{on "click" (fn this.forge.changePvZ 1)}}>+</button>
+          </div>
+        </div>
+        <div class="pv-wrap" id="pvWrap">
+          <canvas id="pvCanvas"></canvas>
+        </div>
+        <div class="stats">
+          <div class="sbox"><div class="sk">Output</div>  <div class="sv" id="pv-sz" style="font-size:9px">—</div></div>
+          <div class="sbox"><div class="sk">Frames</div>  <div class="sv" id="pv-fr">0</div></div>
+          <div class="sbox"><div class="sk">Celda</div>   <div class="sv" id="pv-cl">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mfoot" style="border-top:1px solid var(--brd);padding-top:12px">
+      <button class="btn" type="button" {{on "click" this.forge.closeScale}}>Cancelar</button>
+      <button class="btn" type="button" {{on "click" (fn this.forge.genSheet true)}}>↺ Cargar en editor</button>
+      <button class="btn v" type="button" {{on "click" (fn this.forge.genSheet false)}}>◈ Descargar PNG + JSON</button>
+    </div>
+  </div>
+</div>

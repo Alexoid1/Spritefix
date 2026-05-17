@@ -1,0 +1,24 @@
+<div class="rsb">
+  <div class="rsb-hdr">
+    <div class="rsb-t">Frames</div>
+    <span class="badge">{{this.forge.frames.length}}</span>
+  </div>
+  <div class="flist">
+    {{#each this.forge.frames key="id" as |frame index|}}
+      <div class="fi{{if (eq index this.forge.sel) " on"}}" role="button" {{on "click" (fn this.selectFrame index)}}>
+        <div class="fthumb">
+          <canvas width="36" height="36" {{did-insert (fn this.renderThumb frame)}}></canvas>
+        </div>
+        <div class="fm">
+          <div class="fm-n">{{frame.name}}</div>
+          <div class="fm-s">{{frame.w}}×{{frame.h}} @ {{frame.x}},{{frame.y}}</div>
+        </div>
+        <button class="fdel" type="button" {{on "click" (fn this.deleteFrame index)}}>×</button>
+      </div>
+    {{/each}}
+  </div>
+  <div class="ract">
+    <button class="btn" type="button" {{on "click" this.forge.sortFrames}}>↕ Ord</button>
+    <button class="btn r" type="button" {{on "click" this.forge.clearAll}}>✕ Todo</button>
+  </div>
+</div>
