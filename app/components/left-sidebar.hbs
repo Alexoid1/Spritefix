@@ -59,6 +59,7 @@
       <div class="f"><label>Padding px</label><input type="number" id="autoPad" value="1" min="0" max="20"/></div>
     </div>
     <button class="btn a" type="button" {{on "click" this.forge.runAutoDetect}} style="width:100%;justify-content:center;margin-top:2px">⚡ Detectar</button>
+    <button class="btn v" type="button" {{on "click" this.forge.autoScaleFrames}} disabled={{not this.forge.frames.length}} style="width:100%;justify-content:center;margin-top:4px">◈ Auto Escalado</button>
   </div>
 
   <div class="panel">
@@ -72,7 +73,7 @@
         <div class="f"><label>Cols</label><input type="number" id="sCols" value="8" min="1" {{on "input" this.forge.syncSb2M}}/></div>
         <div class="f"><label>Gap</label>  <input type="number" id="sGap" value="0" min="0" {{on "input" this.forge.syncSb2M}}/></div>
       </div>
-      <div class="f"><label>Fondo</label><input type="color" id="sBg" value="#000000" {{on "input" this.forge.syncSb2M}}/></div>
+      <div class="f"><label>Fondo</label><input type="color" id="sBg" value="#000000" {{on "input" this.forge.syncSb2M}}/><label style="margin-left:8px;font-size:10px"><input type="checkbox" id="sTransparent" checked {{on "input" this.forge.syncSb2M}}/> Transparente</label></div>
       <div class="f"><label>Modo escala</label>
         <div class="rrow">
           <div class="ro on" id="sb-fit"     {{on "click" (fn this.forge.setSM "fit")}}>Fit</div>

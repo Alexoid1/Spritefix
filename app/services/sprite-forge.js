@@ -345,7 +345,10 @@ export default class SpriteForgeService extends Service {
 
   @action
   sortFrames() {
-    this.frames.sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
+    this.frames.sort((a, b) => {
+      if (a.y < b.y + b.h && a.y + a.h > b.y) return a.x - b.x;
+      return a.y - b.y;
+    });
     this.frames.forEach((f, i) => { if (/^frame_\d+$/.test(f.name)) f.name = 'frame_' + i; });
     this.sel = -1;
     this.redraw();
@@ -420,7 +423,10 @@ export default class SpriteForgeService extends Service {
         if (changed) break;
       }
     }
-    merged.sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
+    merged.sort((a, b) => {
+      if (a.y < b.y + b.h && a.y + a.h > b.y) return a.x - b.x;
+      return a.y - b.y;
+    });
     this.frames = new TrackedArray(merged.map((f, i) => ({
       id: i, name: 'frame_' + i,
       x: Math.max(0, f.x - pad), y: Math.max(0, f.y - pad),
@@ -429,6 +435,40 @@ export default class SpriteForgeService extends Service {
     this.fc = this.frames.length; this.sel = -1;
     this.redraw();
     alert(`⚡ Detectados ${this.frames.length} sprites`);
+  }
+
+  @action
+  autoScaleFrames() {
+    if (!this.frames.length) { alert('Detecta frames primero'); return; }
+    const mxW = Math.max(...this.frames.map(f => f.w));
+    const mxH = Math.max(...this.frames.map(f => f.h));
+    if (mxW < 1 || mxH < 1) return;
+    const cols = Math.max(1, Math.ceil(Math.sqrt(this.frames.length)));
+    const rows = Math.ceil(this.frames.length / cols);
+    ['sCW', 'mCW'].forEach(id => { const el = document.getElementById(id); if (el) el.value = mxW; });
+    ['sCH', 'mCH'].forEach(id => { const el = document.getElementById(id); if (el) el.value = mxH; });
+    ['sCols', 'mCols'].forEach(id => { const el = document.getElementById(id); if (el) el.value = cols; });
+    ['sGap', 'mGap'].forEach(id => { const el = document.getElementById(id); if (el) el.value = 0; });
+    const off = document.createElement('canvas');
+    off.width = cols * mxW; off.height = rows * mxH;
+    const oc = off.getContext('2d');
+    this.frames.forEach((f, i) => {
+      oc.drawImage(this.img, f.x, f.y, f.w, f.h, (i % cols) * mxW, Math.floor(i / cols) * mxH, mxW, mxH);
+    });
+    const ni = new Image();
+    ni.onload = () => {
+      this.img = ni;
+      this.imgW = ni.width;
+      this.imgH = ni.height;
+      this.frames = new TrackedArray(this.frames.map((f, i) => ({
+        id: i, name: f.name,
+        x: (i % cols) * mxW, y: Math.floor(i / cols) * mxH,
+        w: mxW, h: mxH
+      })));
+      this.sel = -1;
+      this.fitZoom();
+    };
+    ni.src = off.toDataURL();
   }
 
   @action
@@ -470,7 +510,8 @@ export default class SpriteForgeService extends Service {
       ch: Math.max(4, +document.getElementById('mCH')?.value || 64),
       cols: Math.max(1, +document.getElementById('mCols')?.value || 8),
       gap: Math.max(0, +document.getElementById('mGap')?.value || 0),
-      bg: document.getElementById('mBg')?.value || '#000000'
+      bg: document.getElementById('mBg')?.value || '#000000',
+      transparent: document.getElementById('mTransparent')?.checked || false
     };
   }
 
@@ -481,6 +522,9 @@ export default class SpriteForgeService extends Service {
     document.getElementById('mCols').value = document.getElementById('sCols').value;
     document.getElementById('mGap').value = document.getElementById('sGap').value;
     document.getElementById('mBg').value = document.getElementById('sBg').value;
+    const st = document.getElementById('sTransparent');
+    const mt = document.getElementById('mTransparent');
+    if (st && mt) mt.checked = st.checked;
     if (this.scCache) this.buildSheet();
   }
 
@@ -491,6 +535,9 @@ export default class SpriteForgeService extends Service {
     document.getElementById('sCols').value = document.getElementById('mCols').value;
     document.getElementById('sGap').value = document.getElementById('mGap').value;
     document.getElementById('sBg').value = document.getElementById('mBg').value;
+    const mt = document.getElementById('mTransparent');
+    const st = document.getElementById('sTransparent');
+    if (mt && st) st.checked = mt.checked;
     this.buildSheet();
   }
 
@@ -515,17 +562,18 @@ export default class SpriteForgeService extends Service {
 
   buildSheet() {
     if (!this.img || !this.frames.length) return;
-    const { cw, ch, cols, gap, bg } = this.getP();
+    const { cw, ch, cols, gap, bg, transparent } = this.getP();
     const rows = Math.ceil(this.frames.length / cols);
     const shW = cols * cw + (cols - 1) * gap, shH = rows * ch + (rows - 1) * gap;
     const vCode = this.scaleAlign[0], hCode = this.scaleAlign[1];
     const off = document.createElement('canvas'); off.width = shW; off.height = shH;
-    const oc = off.getContext('2d'); oc.fillStyle = bg; oc.fillRect(0, 0, shW, shH);
+    const oc = off.getContext('2d');
+    if (!transparent) { oc.fillStyle = bg; oc.fillRect(0, 0, shW, shH); }
     oc.imageSmoothingEnabled = true; oc.imageSmoothingQuality = 'high';
     this.frames.forEach((f, i) => {
       const col = i % cols, row = Math.floor(i / cols);
       const cx = col * (cw + gap), cy = row * (ch + gap);
-      oc.fillStyle = bg; oc.fillRect(cx, cy, cw, ch);
+      if (!transparent) { oc.fillStyle = bg; oc.fillRect(cx, cy, cw, ch); }
       if (this.scaleMode === 'stretch') {
         oc.drawImage(this.img, f.x, f.y, f.w, f.h, cx, cy, cw, ch);
       } else if (this.scaleMode === 'crop') {
@@ -608,6 +656,9 @@ export default class SpriteForgeService extends Service {
     document.getElementById('mCols').value = document.getElementById('sCols').value;
     document.getElementById('mGap').value = document.getElementById('sGap').value;
     document.getElementById('mBg').value = document.getElementById('sBg').value;
+    const st = document.getElementById('sTransparent');
+    const mt = document.getElementById('mTransparent');
+    if (st && mt) mt.checked = st.checked;
     document.getElementById('scModal').classList.add('open');
     this.buildSheet();
   }
